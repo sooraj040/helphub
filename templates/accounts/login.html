@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In | HelpHub{% endblock %}
+
+{# The login page. What happens when the form is sent is in login_view, accounts/views.py. #}
+
+{% block content %}
+    <div class="auth-page">
+        <div class="card auth-card">
+            <h1>Welcome back</h1>
+            <p class="muted">Log in to your HelpHub account.</p>
+
+            <form method="post">
+                {# Security token Django requires on every form. #}
+                {% csrf_token %}
+
+                {# Invisible: remembers which page to return to after logging in. #}
+                <input type="hidden" name="next" value="{{ next }}">
+
+                {# The username stays filled in if the password was wrong. #}
+                <div class="form-field">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username"
+                           value="{{ username }}" autocomplete="username"
+                           required autofocus>
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password"
+                           autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Log In
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                New to HelpHub?
+                <a href="{% url 'accounts:register' %}">Create an account</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

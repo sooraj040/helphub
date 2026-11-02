@@ -1,0 +1,91 @@
+{# The shared layout used by every page: the top bar, notices and footer. #}
+{# Each page only fills in its own middle part, the "content" block below. #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HelpHub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    {# Hidden link that lets keyboard users jump past the menu. #}
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {# Top bar: logo on the left, buttons on the right. #}
+    <header class="site-header">
+        <nav class="container nav" aria-label="Main">
+            <a href="{% url 'home' %}" class="logo">HelpHub</a>
+
+            <div class="nav-links">
+                {# Logged-in visitors see Dashboard and Log out. #}
+                {# Everyone else sees Log in and Sign up. #}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">
+                        Dashboard
+                    </a>
+
+                    {# Log out is a small form rather than a link, for security. #}
+                    <form method="post" action="{% url 'accounts:logout' %}"
+                          class="inline-form">
+                        {# Security token Django requires on every form. #}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline">
+                            Log out
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline">
+                        Log in
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+                        Sign up
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    {# One-time notices, e.g. "Your profile has been updated." #}
+    {% if messages %}
+        <div class="container messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}"
+                     role="{% if message.level >= 40 %}alert{% else %}status{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# Each page's own content goes here. #}
+    <main id="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    {# Footer with links to the information pages. #}
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div>
+                    <a href="{% url 'home' %}" class="logo">HelpHub</a>
+                    <p>Trusted local help for everyday jobs.</p>
+                </div>
+
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'contact' %}">Contact</a>
+                    <a href="{% url 'privacy' %}">Privacy Policy</a>
+                    <a href="{% url 'terms' %}">Terms</a>
+                </nav>
+            </div>
+
+            <p class="copyright">
+                &copy; {% now "Y" %} HelpHub. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

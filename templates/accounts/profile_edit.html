@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile | HelpHub{% endblock %}
+
+{# The "Edit your profile" page. The boxes come from ProfileForm in accounts/forms.py. #}
+
+{% block content %}
+    <div class="auth-page">
+        <div class="card auth-card">
+            <h1>Edit your profile</h1>
+            <p class="muted">
+                You're registered as a
+                <strong>{{ user.profile.get_role_display }}</strong>.
+                Roles can only be changed by a HelpHub administrator.
+            </p>
+
+            <form method="post">
+                {# Security token Django requires on every form. #}
+                {% csrf_token %}
+
+                {# Draw every box on the form: email, phone and area/city. #}
+                {% for field in form %}
+                    {% include 'includes/form_field.html' %}
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

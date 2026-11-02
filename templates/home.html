@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}HelpHub | Find Trusted Local Services{% endblock %}
+
+{# The public homepage. Anyone can see it without logging in. #}
+
+{% block content %}
+    {# Section 1: the big introduction at the top. #}
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <p class="eyebrow">Your local service platform</p>
+
+                <h1>Find the right help, right when you need it.</h1>
+
+                <p class="lead">
+                    Post the job you need done, compare quotations from
+                    local workers and choose the one that suits you. Or
+                    join HelpHub as a worker and find customers near you.
+                </p>
+
+                {# Logged-in visitors get a Dashboard button instead of Sign up / Log in. #}
+                <div class="actions">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'accounts:dashboard' %}"
+                           class="btn btn-primary">
+                            Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:register' %}"
+                           class="btn btn-primary">
+                            Get Started
+                        </a>
+
+                        <a href="{% url 'accounts:login' %}"
+                           class="btn btn-outline">
+                            I Already Have an Account
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Section 2: popular services. #}
+    <section class="section" aria-labelledby="categories-heading">
+        <div class="container">
+            <h2 class="section-title" id="categories-heading">
+                Popular services
+            </h2>
+            <p class="section-intro">
+                From a dripping tap to moving house, find help for the
+                jobs that come up at home.
+            </p>
+
+            {# One card for each category in the list in accounts/views.py. #}
+            <ul class="category-grid">
+                {% for category in categories %}
+                    <li class="category">
+                        <h3>{{ category.name }}</h3>
+                        <p>{{ category.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    {# Section 3: how HelpHub works, in four numbered steps. #}
+    <section class="section section-alt" aria-labelledby="how-heading">
+        <div class="container">
+            <h2 class="section-title" id="how-heading">How HelpHub works</h2>
+            <p class="section-intro">
+                You stay in control of the price and who you hire.
+            </p>
+
+            <ol class="steps">
+                <li class="step">
+                    <h3>Post your request</h3>
+                    <p>
+                        Describe the job, where you are, your budget and
+                        when you need it done.
+                    </p>
+                </li>
+                <li class="step">
+                    <h3>Receive quotations</h3>
+                    <p>
+                        Local workers send you their price and a message
+                        explaining how they would help.
+                    </p>
+                </li>
+                <li class="step">
+                    <h3>Choose your worker</h3>
+                    <p>
+                        Compare the offers and select the worker that
+                        suits you best.
+                    </p>
+                </li>
+                <li class="step">
+                    <h3>Get it done and review</h3>
+                    <p>
+                        Track the job until it's complete, then rate the
+                        worker to help others choose.
+                    </p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    {# Section 4: what customers and workers can each do. #}
+    <section class="section" aria-labelledby="audience-heading">
+        <div class="container">
+            <h2 class="section-title" id="audience-heading">
+                One platform. Two ways to connect.
+            </h2>
+            <p class="section-intro">
+                Choose your role when you sign up.
+            </p>
+
+            <div class="audience-grid">
+                <div class="card">
+                    <h3>For customers</h3>
+                    <ul>
+                        <li>Post a service request in a few minutes</li>
+                        <li>Get quotations from local workers</li>
+                        <li>Compare prices and choose who you hire</li>
+                        <li>Track progress and review the work</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>For workers</h3>
+                    <ul>
+                        <li>Browse service requests in your area</li>
+                        <li>Send quotations with your price and message</li>
+                        <li>Manage the jobs you've been chosen for</li>
+                        <li>Build your reputation through reviews</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Section 5: a final sign-up prompt, only for visitors who aren't logged in. #}
+    {% if not user.is_authenticated %}
+        <section class="section section-alt cta">
+            <div class="container">
+                <h2 class="section-title">Ready to get started?</h2>
+                <p class="section-intro">
+                    Create your account as a customer or a worker.
+                </p>
+                <div class="actions">
+                    <a href="{% url 'accounts:register' %}"
+                       class="btn btn-primary">
+                        Sign Up
+                    </a>
+                    <a href="{% url 'accounts:login' %}"
+                       class="btn btn-outline">
+                        Log In
+                    </a>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

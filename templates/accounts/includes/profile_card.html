@@ -1,0 +1,31 @@
+{# Profile summary shown on both dashboards. Expects "profile" in the context. #}
+<section class="card" aria-labelledby="profile-heading">
+    <h2 id="profile-heading">Your profile</h2>
+
+    {# Each pair is a label and its value. Empty values show "Not added". #}
+    <dl class="details">
+        <dt>Role</dt>
+        <dd>{{ profile.get_role_display }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ user.email|default:"Not added" }}</dd>
+
+        <dt>Phone</dt>
+        <dd>{{ profile.phone|default:"Not added" }}</dd>
+
+        <dt>Location</dt>
+        <dd>{{ profile.location|default:"Not added" }}</dd>
+
+        <dt>Joined</dt>
+        <dd>{{ user.date_joined|date:"j M Y" }}</dd>
+    </dl>
+
+    {# A reminder shown until both phone and location are filled in. #}
+    {% if not profile.phone or not profile.location %}
+        <p class="hint">{{ missing_details_hint }}</p>
+    {% endif %}
+
+    <a href="{% url 'accounts:profile_edit' %}" class="btn btn-outline btn-block">
+        Edit Profile
+    </a>
+</section>

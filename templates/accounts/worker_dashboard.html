@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Worker Dashboard | HelpHub{% endblock %}
+
+{# The dashboard workers see after logging in. #}
+
+{% block content %}
+    <div class="container dashboard">
+        <div class="dash-header">
+            <div>
+                <p class="eyebrow">Worker dashboard</p>
+                <h1>Welcome, {{ user.username }}!</h1>
+            </div>
+
+            {# Greyed out for now. It will open the list of requests once Phase 3 adds it. #}
+            <div class="dash-action">
+                <button type="button" class="btn btn-primary" disabled
+                        aria-describedby="browse-note">
+                    Browse Requests
+                </button>
+                <p class="muted" id="browse-note">Coming soon</p>
+            </div>
+        </div>
+
+        {# Two columns: quotations and jobs on the left, profile card on the right. #}
+        <div class="dash-grid">
+            <div class="dash-main">
+                {# Empty for now. Phase 3 will list the worker's quotations here. #}
+                <section class="card" aria-labelledby="quotes-heading">
+                    <h2 id="quotes-heading">My quotations</h2>
+
+                    <div class="empty-state">
+                        <strong>You haven't sent any quotations yet.</strong>
+                        <p>
+                            When you quote on a customer's request, you'll
+                            be able to follow it here.
+                        </p>
+                    </div>
+                </section>
+
+                {# Empty for now. Phase 4 will list the worker's jobs here. #}
+                <section class="card" aria-labelledby="jobs-heading">
+                    <h2 id="jobs-heading">My jobs</h2>
+
+                    <div class="empty-state">
+                        <strong>No jobs yet.</strong>
+                        <p>
+                            Jobs appear here when a customer selects your
+                            quotation.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            {# The "Your profile" card, from accounts/includes/profile_card.html #}
+            {% include 'accounts/includes/profile_card.html' with missing_details_hint="Add your phone number and location so customers nearby can find you." %}
+        </div>
+    </div>
+{% endblock %}

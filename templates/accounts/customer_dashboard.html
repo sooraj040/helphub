@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Dashboard | HelpHub{% endblock %}
+
+{# The dashboard customers see after logging in. #}
+
+{% block content %}
+    <div class="container dashboard">
+        <div class="dash-header">
+            <div>
+                <p class="eyebrow">Customer dashboard</p>
+                <h1>Welcome, {{ user.username }}!</h1>
+            </div>
+
+            {# Greyed out for now. It will open the request form once Phase 2 adds it. #}
+            <div class="dash-action">
+                <button type="button" class="btn btn-primary" disabled
+                        aria-describedby="post-request-note">
+                    Post a Service Request
+                </button>
+                <p class="muted" id="post-request-note">Coming soon</p>
+            </div>
+        </div>
+
+        {# Two columns: requests on the left, profile card on the right. #}
+        <div class="dash-grid">
+            <div class="dash-main">
+                {# Empty for now. Phase 2 will list the customer's requests here. #}
+                <section class="card" aria-labelledby="requests-heading">
+                    <h2 id="requests-heading">My service requests</h2>
+
+                    <div class="empty-state">
+                        <strong>You haven't posted any requests yet.</strong>
+                        <p>
+                            Once you post a request, you'll see its status
+                            and the quotations workers send you here.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            {# The "Your profile" card, from accounts/includes/profile_card.html #}
+            {% include 'accounts/includes/profile_card.html' with missing_details_hint="Add your phone number and location so workers can reach you." %}
+        </div>
+    </div>
+{% endblock %}

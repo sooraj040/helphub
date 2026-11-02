@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up | HelpHub{% endblock %}
+
+{# The sign-up page. The boxes come from RegisterForm in accounts/forms.py. #}
+
+{% block content %}
+    <div class="auth-page">
+        <div class="card auth-card">
+            <h1>Create your account</h1>
+            <p class="muted">
+                Choose whether you want to use HelpHub as a customer or a worker.
+            </p>
+
+            <form method="post">
+                {# Security token Django requires on every form. #}
+                {% csrf_token %}
+
+                {# Problems that aren't about one particular box. #}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-error" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {# Each box is drawn by templates/includes/form_field.html #}
+                {% include 'includes/form_field.html' with field=form.username %}
+                {% include 'includes/form_field.html' with field=form.email %}
+
+                {# The Customer / Worker choice, shown as two clickable cards. #}
+                <fieldset class="role-choice{% if form.role.errors %} has-error{% endif %}">
+                    <legend>I want to join as a…</legend>
+
+                    <div class="role-options">
+                        {% for radio in form.role %}
+                            <label class="role-option" for="{{ radio.id_for_label }}">
+                                {{ radio.tag }}
+                                <span class="role-title">{{ radio.choice_label }}</span>
+                                <span class="role-desc">
+                                    {% if radio.data.value == 'worker' %}
+                                        Find jobs and send quotations
+                                    {% else %}
+                                        Post requests and hire workers
+                                    {% endif %}
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </div>
+
+                    {{ form.role.errors }}
+                </fieldset>
+
+                {% include 'includes/form_field.html' with field=form.password1 %}
+                {% include 'includes/form_field.html' with field=form.password2 %}
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Already registered?
+                <a href="{% url 'accounts:login' %}">Log in</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

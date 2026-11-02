@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | HelpHub{% endblock %}
+
+{# Shown to an account that has no customer or worker role. #}
+
+{% block content %}
+    <div class="auth-page">
+        <div class="card auth-card">
+            <h1>Your account isn't set up yet</h1>
+            <p class="muted">
+                Your account doesn't have a customer or worker role, so
+                there's no dashboard to show. Please contact a HelpHub
+                administrator to finish setting it up.
+            </p>
+            <a href="{% url 'home' %}" class="btn btn-outline">Back to Home</a>
+        </div>
+    </div>
+{% endblock %}
